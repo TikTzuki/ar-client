@@ -8,9 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class TermScoreSummary {
-    Double avgTermScore;
-    Double avgGPATermScore;
-    Double avgScore;
-    Double avgGPAScore;
-    Integer creditsCount;
+    public Double avgTermScore;
+    public Double avgGPATermScore;
+    public Double avgScore;
+    public Double avgGPAScore;
+    public Integer creditsTermCount;
+    public Integer creditsCount;
 }

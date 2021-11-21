@@ -11,18 +11,21 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class TermResult implements HyperBody {
-    StudentSummary studentSummary;
-    List<TermResultItem> termResultItems;
+    public StudentSummary studentSummary;
+    public List<TermResultItem> termResultItems;
 
     @Override
     public String toJson() {
         return gson.toJson(this);
     }
 
-    static class TermResultItem {
-        Integer term;
-        String year;
-        List<TermScoreItem> termScoreItems;
-        TermScoreSummary termScoreSummary;
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class TermResultItem {
+        public Integer term;
+        public String year;
+        public List<TermScoreItem> termScoreItems;
+        public TermScoreSummary termScoreSummary;
     }
 }

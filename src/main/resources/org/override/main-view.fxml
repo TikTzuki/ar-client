@@ -4,10 +4,17 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="mainBorderPane" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.override.controllers.MainController">
+<BorderPane
+        fx:id="mainBorderPane"
+        xmlns="http://javafx.com/javafx/11.0.2"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="org.override.controllers.MainController"
+        prefWidth="1100"
+        prefHeight="700"
+>
     <left>
         <VBox spacing="5">
-            <Button onAction="#handleShowView" styleClass="btn, btn-primary" text="btn 1" userData="view-1.fxml"/>
+            <Button onAction="#handleShowView" styleClass="btn, btn-primary" text="btn 1" userData="view-score.fxml"/>
             <Button onAction="#handleShowView" styleClass="btn" text="btn 2" userData="view-2.fxml"/>
             <Button onAction="#handleShowView" text="btn 3" userData="view-3.fxml"/>
         </VBox>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<?import javafx.scene.control.skin.TableHeaderRow?>
+<BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="view-1" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.override.controllers.ViewScoreController">
+    <Text>view 1</Text>
+    <center>
+        <ScrollPane BorderPane.alignment="CENTER">
+            <VBox fx:id="vBoxResult"/>
+        </ScrollPane>
+    </center>
+</BorderPane>

@@ -10,19 +10,19 @@ import org.override.core.models.HyperBody;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TermScoreItem implements HyperBody {
-    String subjectId;
-    String subjectName;
-    Integer creditsCount;
-    Double examPercent;
-    Double finalExamPercent;
-    Double examScore;
-    Double finalExamScore;
-    Double termScoreFirst;
-    Double termScoreSecond;
-    String gpaFrist;
-    String gpaSecond;
-    Double gpa;
-    String result;
+    public String subjectId;
+    public String subjectName;
+    public Integer creditsCount;
+    public Double examPercent;
+    public Double finalExamPercent;
+    public Double examScore;
+    public Double finalExamScore;
+    public Double termScoreFirst;
+    public Double termScoreSecond;
+    public String gpaFirst;
+    public String gpaSecond;
+    public Double gpa;
+    public String result;
 
     @Override
     public String toJson() {
