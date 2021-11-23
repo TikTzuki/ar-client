@@ -68,15 +68,17 @@
             <artifactId>ikonli-javafx</artifactId>
             <version>12.2.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.kordamp.bootstrapfx</groupId>
             <artifactId>bootstrapfx-core</artifactId>
             <version>0.4.0</version>
         </dependency>
+
         <dependency>
             <groupId>eu.hansolo</groupId>
             <artifactId>tilesfx</artifactId>
-            <version>17.0.0</version>
+            <version>17.0.4</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.openjfx</groupId>

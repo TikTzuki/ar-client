@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.layout.*?>
+
+
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.geometry.Insets?>
+<GridPane prefHeight="400.0"
+          prefWidth="600.0"
+          xmlns="http://javafx.com/javafx/11.0.2"
+          xmlns:fx="http://javafx.com/fxml/1"
+          hgap="10"
+          vgap="10"
+          fx:id="gridPane"
+          fx:controller="org.override.controllers.LearningProcessController">
+    <padding>
+        <Insets top="25" right="25" bottom="25" left="25"/>
+    </padding>
+    <TableView GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <columns>
+            <TableColumn text="col-1"/>
+            <TableColumn text="col-2"/>
+        </columns>
+    </TableView>
+    <LineChart fx:id="learningProcessLC" GridPane.columnIndex="1" GridPane.rowIndex="0">
+        <xAxis>
+            <CategoryAxis side="BOTTOM"/>
+        </xAxis>
+        <yAxis>
+            <NumberAxis side="LEFT"/>
+        </yAxis>
+    </LineChart>
+</GridPane>

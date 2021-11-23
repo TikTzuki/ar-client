@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
 <BorderPane
         fx:id="mainBorderPane"
         xmlns="http://javafx.com/javafx/11.0.2"
@@ -12,15 +16,29 @@
         prefWidth="1100"
         prefHeight="700"
 >
+    <top>
+        <HBox styleClass="panel-body, top-bar" spacing="5">
+            <Label text="MSSV" styleClass="text"/>
+            <TextField text="hihi" minHeight="30"/>
+            <Button minHeight="30">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <Image url="@images/education/geography.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </HBox>
+    </top>
     <left>
-        <VBox spacing="5">
-            <Button onAction="#handleShowView" styleClass="btn, btn-primary" text="btn 1" userData="view-score.fxml"/>
-            <Button onAction="#handleShowView" styleClass="btn" text="btn 2" userData="view-2.fxml"/>
-            <Button onAction="#handleShowView" text="btn 3" userData="view-3.fxml"/>
+        <VBox spacing="1" styleClass="navbar">
+            <Button fx:id="viewScoreBtn" onAction="#handleShowView" styleClass="nav-item, active" text="Tra cứu điểm" userData="view-score.fxml"/>
+            <Button fx:id="viewProcessBtn" onAction="#handleShowView" styleClass="nav-item" text="Tiến độ học tập" userData="learning-process.fxml"/>
+            <Button fx:id="viewRankingBtn" onAction="#handleShowView" styleClass="nav-item" text="Xếp hạng" userData="ranking.fxml"/>
         </VBox>
     </left>
+
     <center>
-        <fx:include source="lookup-result.fxml"/>
+        <fx:include source="view-score.fxml"/>
     </center>
 
     <bottom>
@@ -31,5 +49,7 @@
 
     <stylesheets>
         <URL value="@css/styles.css"/>
+        <URL value="@css/dist/bootstrapfx.css"/>
     </stylesheets>
+
 </BorderPane>

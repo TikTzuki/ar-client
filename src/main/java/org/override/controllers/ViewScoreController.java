@@ -14,8 +14,12 @@ import org.override.models.TermScoreSummary;
 
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ViewScoreController implements Initializable {
+    @FXML
+    GridPane studentSummaryPane;
 
     @FXML
     VBox vBoxResult;
@@ -24,11 +28,43 @@ public class ViewScoreController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         TermResult rs = fakeData();
+//        SUMMARY
+
+        setUpStudenSummaryPane(studentSummaryPane, rs.studentSummary);
+//        SCORE
         for (TermResult.TermResultItem termResultItem : rs.termResultItems) {
             Accordion accordion = new Accordion();
             accordion.getPanes().add(setUpTermResultItemTitlePane(termResultItem));
             vBoxResult.getChildren().add(accordion);
         }
+
+    }
+
+    private void setUpStudenSummaryPane(GridPane studentSummaryPane, StudentSummary studentSummary) {
+        studentSummaryPane.setPadding(new Insets(20));
+        studentSummaryPane.setHgap(25);
+        studentSummaryPane.setVgap(15);
+
+        Label[] values = Stream.of(
+                studentSummary.id,
+                studentSummary.name,
+                studentSummary.gender,
+                studentSummary.placeOfBirth,
+                studentSummary.classes,
+                studentSummary.subject
+        ).map(Label::new).toArray(Label[]::new);
+
+        Label[] labels = Stream.of(
+                "Mã sinh viên",
+                "Tên sinh viên",
+                "Phái",
+                "Nơi sinh",
+                "Lớp",
+                "Ngành"
+        ).map(Label::new).toArray(Label[]::new);
+
+        studentSummaryPane.addColumn(0, labels);
+        studentSummaryPane.addColumn(1, values);
     }
 
     private TitledPane setUpTermResultItemTitlePane(TermResult.TermResultItem termResultItem) {
@@ -47,28 +83,27 @@ public class ViewScoreController implements Initializable {
         TableView<TermScoreItem> table = setUpTableView(termResultItem.termScoreItems);
         termScoreSummaryPane.add(table, 0, 0, 2, 1);
 //        CONCLUSION
-        String[] termScoreLabels = new String[]{
+
+        Label[] termScoreLabels = (Label[]) Stream.of(
                 "Điểm trung bình học kỳ hệ 10/100:",
                 "Điểm trung bình học kỳ hệ 4:",
                 "Điểm trung bình tích lũy:",
                 "Điểm trung bình tích lũy (hệ 4):",
                 "Số tín chỉ đạt:",
                 "Số tín chỉ tích lũy:"
-        };
-        String[] termScoreValue = new String[]{
+        ).map(Label::new).toArray(Label[]::new);
+
+        Label[] termScoreValues = (Label[]) Stream.of(
                 termScoreSummary.avgTermScore.toString(),
                 termScoreSummary.avgGPATermScore.toString(),
                 termScoreSummary.avgScore.toString(),
                 termScoreSummary.avgGPAScore.toString(),
                 termScoreSummary.creditsTermCount.toString(),
                 termScoreSummary.creditsCount.toString()
-        };
-        for (String s : termScoreLabels) {
-            termScoreSummaryPane.addColumn(0, new Label(s));
-        }
-        for (String s : termScoreValue) {
-            termScoreSummaryPane.addColumn(1, new Label(s));
-        }
+        ).map(Label::new).toArray(Label[]::new);
+
+        termScoreSummaryPane.addColumn(0, termScoreLabels);
+        termScoreSummaryPane.addColumn(1, termScoreValues);
 
         return termScoreSummaryPane;
     }
