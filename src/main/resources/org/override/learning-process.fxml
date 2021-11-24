@@ -24,7 +24,7 @@
             <TableColumn text="col-2"/>
         </columns>
     </TableView>
-    <LineChart fx:id="learningProcessLC" GridPane.columnIndex="1" GridPane.rowIndex="0">
+    <LineChart fx:id="learningProcessLC" GridPane.columnIndex="1" GridPane.rowIndex="0" title="Biểu đồ điểm tổng kết các học phần">
         <xAxis>
             <CategoryAxis side="BOTTOM"/>
         </xAxis>

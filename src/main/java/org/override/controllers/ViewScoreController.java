@@ -11,6 +11,7 @@ import org.override.models.StudentSummary;
 import org.override.models.TermResult;
 import org.override.models.TermScoreItem;
 import org.override.models.TermScoreSummary;
+import org.override.utils.FakeData;
 
 import java.net.URL;
 import java.util.*;
@@ -27,7 +28,7 @@ public class ViewScoreController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        TermResult rs = fakeData();
+        TermResult rs = FakeData.getTermResult();
 //        SUMMARY
 
         setUpStudenSummaryPane(studentSummaryPane, rs.studentSummary);
@@ -164,17 +165,5 @@ public class ViewScoreController implements Initializable {
         return table;
     }
 
-    private TermResult fakeData() {
-        return new TermResult(
-                new StudentSummary("123", "name", "gender", "123 Ng", "2020-10-30", "DTC", "CNTT"),
-                List.of(
-                        new TermResult.TermResultItem(
-                                1,
-                                "2021-2022",
-                                List.of(new TermScoreItem("1", "môn 1", 1, 1D, 1D, 1D, 1D, 1D, 1D, "a", "b", 4D, "Đ")),
-                                new TermScoreSummary(3D, 4D, 3D, 4D, 20, 120)
-                        )
-                )
-        );
-    }
+
 }

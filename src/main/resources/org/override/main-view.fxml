@@ -38,7 +38,7 @@
     </left>
 
     <center>
-        <fx:include source="view-score.fxml"/>
+        <fx:include source="learning-process.fxml"/>
     </center>
 
     <bottom>
