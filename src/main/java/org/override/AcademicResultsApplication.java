@@ -13,6 +13,8 @@ import java.util.Objects;
 
 public class AcademicResultsApplication extends Application {
 
+    public static Scene scene;
+
     @Override
     public void start(Stage stage) throws Exception {
         URL resouce = getClass().getResource("main-view.fxml");
@@ -22,7 +24,7 @@ public class AcademicResultsApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(resouce);
 
         BorderPane pane = fxmlLoader.load();
-        Scene scene = new Scene(pane);
+        scene = new Scene(pane);
 
         stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("images/education/alarm-clock.png"))));
         stage.setTitle("Have a good day, sweetie!!!");

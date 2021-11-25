@@ -2,13 +2,11 @@ package org.override.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.layout.GridPane;
 import org.override.models.TermResult;
 import org.override.utils.FakeData;
-import com.sun.javafx.charts.Legend;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -17,7 +15,7 @@ public class LearningProcessController implements Initializable {
     final String AVG_GPA_SCORE = "Trung bình GPA tích lũy";
     final String AVG_GPA_TERM_SCORE = "Trung bình GPA học kỳ";
     final String AVG_SCORE = "Trung bình tích lũy";
-    final String AVG_TẸRM_SCORE = "Trung bình học kỳ";
+    final String AVG_TERM_SCORE = "Trung bình học kỳ";
 
     @FXML
     private LineChart<String, Number> learningProcessLC;
@@ -63,7 +61,7 @@ public class LearningProcessController implements Initializable {
         );
 
         XYChart.Series termScoreSeries = new XYChart.Series<>();
-        termScoreSeries.setName(AVG_TẸRM_SCORE);
+        termScoreSeries.setName(AVG_TERM_SCORE);
         termScoreSeries.getData().addAll(
                 termResult.termResultItems.stream()
                         .map(i -> new XYChart.Data<>(
@@ -78,14 +76,6 @@ public class LearningProcessController implements Initializable {
                 scoreSeries,
                 termScoreSeries
         );
-        for(Node n: lineChart.getChildrenUnmodifiable()){
-            if(n instanceof Legend){
-                Legend l = (Legend) n;
-                for(Legend.LegendItem li : l.getItems()){
-                    System.out.println(li.getText());
-                }
-            }
-        }
     }
 
 

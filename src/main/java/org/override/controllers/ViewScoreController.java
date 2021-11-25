@@ -1,32 +1,41 @@
 package org.override.controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import org.override.AcademicResultsApplication;
 import org.override.models.StudentSummary;
 import org.override.models.TermResult;
 import org.override.models.TermScoreItem;
 import org.override.models.TermScoreSummary;
 import org.override.utils.FakeData;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class ViewScoreController implements Initializable {
+public class ViewScoreController extends Controller implements Initializable {
     @FXML
     GridPane studentSummaryPane;
 
     @FXML
     VBox vBoxResult;
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        MainController mainController = getController("main-view.fxml");
+        System.out.println("--->");
+        System.out.println(
+                mainController.studentIdTextField.getText()
+        );
+        System.out.println("--->");
 
         TermResult rs = FakeData.getTermResult();
 //        SUMMARY

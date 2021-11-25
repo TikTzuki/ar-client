@@ -4,14 +4,21 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import org.override.AcademicResultsApplication;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class MainController {
     static final String ACTIVE_CLASS = "active";
+
+    @FXML
+    public TextField studentIdTextField;
+
     @FXML
     private BorderPane mainBorderPane;
     @FXML
@@ -33,12 +40,19 @@ public class MainController {
         loadFXML(AcademicResultsApplication.class.getResource(view));
     }
 
-    private void loadFXML(URL url) {
+    public void loadFXML(URL url) {
         try {
             FXMLLoader loader = new FXMLLoader(url);
             mainBorderPane.setCenter(loader.load());
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    @FXML
+    private void loadTermResult(ActionEvent e) {
+        System.out.println(
+                studentIdTextField.getText()
+        );
     }
 }

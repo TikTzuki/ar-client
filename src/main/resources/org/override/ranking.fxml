@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
+
 
 <BorderPane
-        prefHeight="400.0" prefWidth="600.0"
-        xmlns="http://javafx.com/javafx"
->
+        xmlns="http://javafx.com/javafx/11.0.2"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="org.override.controllers.RankingController">
     <center>
-        <Text>View 3</Text>
+        <ScrollPane
+                BorderPane.alignment="CENTER"
+                vbarPolicy="ALWAYS">
+            <TableView
+                    fx:id="rankTable"/>
+        </ScrollPane>
     </center>
+    <bottom>
+        <HBox prefHeight="100"
+              alignment="CENTER"
+              spacing="10">
+            <CheckBox fx:id="academicYearCheckBox" text="Khóa"/>
+            <CheckBox fx:id="specialityCheckBox" text="Chuyên ngành"/>
+            <CheckBox fx:id="departmentCheckBox" text="Khoa"/>
+            <Button fx:id="submitButton" mnemonicParsing="false" text="Xếp hạng"/>
+        </HBox>
+    </bottom>
 </BorderPane>
