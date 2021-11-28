@@ -7,6 +7,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.GridPane;
 import org.override.models.TermResult;
 import org.override.utils.FakeData;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -20,17 +21,14 @@ public class LearningProcessController implements Initializable {
     @FXML
     private LineChart<String, Number> learningProcessLC;
 
-    @FXML
-    private GridPane gridPane;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        TermResult termResult = FakeData.getTermResult();
-        setUpLineChart(learningProcessLC, termResult);
+        MainController.currentTermResult.ifPresent(
+                termResult -> setUpLineChart(learningProcessLC, termResult)
+        );
     }
 
     private void setUpLineChart(LineChart<String, Number> lineChart, TermResult termResult) {
-
 
 
         XYChart.Series gpaScoreSeries = new XYChart.Series<>();

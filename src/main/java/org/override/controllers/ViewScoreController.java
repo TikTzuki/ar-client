@@ -30,23 +30,20 @@ public class ViewScoreController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        MainController mainController = getController("main-view.fxml");
-        System.out.println("--->");
-        System.out.println(
-                mainController.studentIdTextField.getText()
-        );
-        System.out.println("--->");
-
-        TermResult rs = FakeData.getTermResult();
+        MainController.currentTermResult.ifPresent(
+                termResult -> {
 //        SUMMARY
-
-        setUpStudenSummaryPane(studentSummaryPane, rs.studentSummary);
+                    setUpStudenSummaryPane(studentSummaryPane, termResult.studentSummary);
 //        SCORE
-        for (TermResult.TermResultItem termResultItem : rs.termResultItems) {
-            Accordion accordion = new Accordion();
-            accordion.getPanes().add(setUpTermResultItemTitlePane(termResultItem));
-            vBoxResult.getChildren().add(accordion);
-        }
+                    for (TermResult.TermResultItem termResultItem : termResult.termResultItems) {
+                        Accordion accordion = new Accordion();
+                        accordion.getPanes().add(setUpTermResultItemTitlePane(termResultItem));
+                        vBoxResult.getChildren().add(accordion);
+                    }
+
+                }
+        );
+
 
     }
 

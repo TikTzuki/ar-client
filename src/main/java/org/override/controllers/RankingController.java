@@ -5,19 +5,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 import org.override.AcademicResultsApplication;
-import org.override.core.models.HyperBody;
 import org.override.models.StudentSummary;
-import org.override.models.TermResult;
 import org.override.utils.FakeData;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class RankingController extends Controller implements Initializable {
 
@@ -39,8 +35,8 @@ public class RankingController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         List<StudentSummary> studentSummaries = List.of(
-                FakeData.getTermResult().studentSummary,
-                FakeData.getTermResult1().studentSummary
+                FakeData.getTermResult("123").studentSummary,
+                FakeData.getTermResult("456").studentSummary
         );
         setUpRankTable(studentSummaries);
     }
@@ -85,7 +81,7 @@ public class RankingController extends Controller implements Initializable {
                                 StudentSummary studentSummary = getTableView().getItems().get(getIndex());
                                 System.out.println(studentSummary);
 
-                                FXMLLoader loader = getLoder("main-view.fxml");
+                                FXMLLoader loader = getLoader(APP_CONFIG.mainView());
                                 try {
                                     AcademicResultsApplication.scene.setRoot(loader.load());
                                 } catch (IOException ex) {
@@ -95,7 +91,7 @@ public class RankingController extends Controller implements Initializable {
 
                                 controller.studentIdTextField.setText(studentSummary.id);
 
-                                controller.loadFXML(AcademicResultsApplication.class.getResource("view-score.fxml"));
+                                controller.loadFXML(AcademicResultsApplication.class.getResource(APP_CONFIG.scoreView()));
                             });
                             setGraphic(btn);
                             setText(null);

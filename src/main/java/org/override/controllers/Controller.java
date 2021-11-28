@@ -1,18 +1,20 @@
 package org.override.controllers;
 
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import org.override.AcademicResultsApplication;
+import org.override.core.configs.Appconfig;
 
 import java.io.IOException;
 
 public class Controller {
-    protected FXMLLoader getLoder(String view) {
+    Appconfig APP_CONFIG = Appconfig.getInstance();
+
+    protected FXMLLoader getLoader(String view) {
         return new FXMLLoader(AcademicResultsApplication.class.getResource(view));
     }
 
     protected <T> T getComp(String view) {
-        FXMLLoader loader = getLoder(view);
+        FXMLLoader loader = getLoader(view);
         try {
             return loader.load();
         } catch (IOException e) {
