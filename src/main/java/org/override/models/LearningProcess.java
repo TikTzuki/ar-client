@@ -23,8 +23,8 @@ public class LearningProcess implements HyperBody {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Credits {
-        public String id;
-        public String name;
+        public String subjectId;
+        public String subjectName;
         public Integer creditsCount;
     }
 }
