@@ -39,8 +39,8 @@ public class RankingController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         List<StudentSummary> studentSummaries = List.of(
-                FakeData.getTermResult(MainController.currentStudenId).studentSummary,
-                FakeData.getTermResult1().studentSummary
+                FakeData.getTermResult("123").studentSummary,
+                FakeData.getTermResult("456").studentSummary
         );
         setUpRankTable(studentSummaries);
     }
@@ -85,7 +85,7 @@ public class RankingController extends Controller implements Initializable {
                                 StudentSummary studentSummary = getTableView().getItems().get(getIndex());
                                 System.out.println(studentSummary);
 
-                                FXMLLoader loader = getLoder("main-view.fxml");
+                                FXMLLoader loader = getLoader(APP_CONFIG.mainView());
                                 try {
                                     AcademicResultsApplication.scene.setRoot(loader.load());
                                 } catch (IOException ex) {
@@ -95,7 +95,7 @@ public class RankingController extends Controller implements Initializable {
 
                                 controller.studentIdTextField.setText(studentSummary.id);
 
-                                controller.loadFXML(AcademicResultsApplication.class.getResource("view-score.fxml"));
+                                controller.loadFXML(AcademicResultsApplication.class.getResource(APP_CONFIG.scoreView()));
                             });
                             setGraphic(btn);
                             setText(null);

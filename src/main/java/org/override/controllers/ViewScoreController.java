@@ -30,17 +30,20 @@ public class ViewScoreController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        TermResult rs = FakeData.getTermResult(MainController.currentStudenId);
+        MainController.currentTermResult.ifPresent(
+                termResult -> {
 //        SUMMARY
-
-        setUpStudenSummaryPane(studentSummaryPane, rs.studentSummary);
+                    setUpStudenSummaryPane(studentSummaryPane, termResult.studentSummary);
 //        SCORE
-        for (TermResult.TermResultItem termResultItem : rs.termResultItems) {
-            Accordion accordion = new Accordion();
-            accordion.getPanes().add(setUpTermResultItemTitlePane(termResultItem));
-            vBoxResult.getChildren().add(accordion);
-        }
+                    for (TermResult.TermResultItem termResultItem : termResult.termResultItems) {
+                        Accordion accordion = new Accordion();
+                        accordion.getPanes().add(setUpTermResultItemTitlePane(termResultItem));
+                        vBoxResult.getChildren().add(accordion);
+                    }
+
+                }
+        );
+
 
     }
 

@@ -23,7 +23,7 @@ public class SocketService {
 
     public HyperEntity sendRequest(HyperEntity request) throws IOException {
         try {
-            Socket socket = new Socket(configs.host, configs.port);
+            Socket socket = new Socket(configs.getHost(), configs.getPort());
             socket.setSoTimeout(30_000);
 
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());

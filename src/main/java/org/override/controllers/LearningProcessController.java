@@ -1,25 +1,42 @@
 package org.override.controllers;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
+import org.override.models.CreditModel;
 import org.override.models.TermResult;
+import org.override.services.LearningProcessService;
+import org.override.services.RankingService;
+import org.override.services.TermResultService;
 import org.override.utils.FakeData;
+import org.override.utils.Utils;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class LearningProcessController implements Initializable {
+    RankingService rankingService = RankingService.getInstance();
+    LearningProcessService learningProcessService = LearningProcessService.getInstance();
+
+
     final String SERIES_TEMPLATE = "HK %s - %s";
     final String AVG_GPA_SCORE = "Trung bình GPA tích lũy";
     final String AVG_GPA_TERM_SCORE = "Trung bình GPA học kỳ";
     final String AVG_SCORE = "Trung bình tích lũy";
     final String AVG_TERM_SCORE = "Trung bình học kỳ";
+
+    @FXML
+    private Text percentProcessText;
+
+    @FXML
+    private TableView creditsTable;
 
     @FXML
     private LineChart<String, Number> learningProcessLC;
@@ -43,8 +60,38 @@ public class LearningProcessController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        TermResult termResult = FakeData.getTermResult(MainController.currentStudenId);
-        setUpLineChart(learningProcessLC, termResult);
+        MainController.currentTermResult.ifPresent(
+                termResult -> {
+                    percentProcessText.setText(
+                            learningProcessService.getProcess(termResult.studentSummary.id)
+                    );
+
+                    setUpLineChart(learningProcessLC, termResult);
+
+                    setUpCreditsTable(creditsTable, termResult.studentSummary.id);
+                }
+        );
+    }
+
+    private void setUpCreditsTable(TableView table, String sutdenId) {
+        TableColumn[] columns = List.of(
+                        "Mã môn học",
+                        "Tên",
+                        "Tín chỉ"
+                ).stream().map(TableColumn::new)
+                .toArray(TableColumn[]::new);
+        String[] properties = new String[]{
+                "subjectId",
+                "subjectName",
+                "creditsCount"
+        };
+        for (int i = 0; i < columns.length; i++) {
+            columns[i].setCellValueFactory(new PropertyValueFactory<>(properties[i]));
+        }
+
+        table.getColumns().addAll(columns);
+        table.getItems().addAll(learningProcessService.getCredit(sutdenId));
+        Utils.autoResizeColumns(table);
     }
 
     @FXML

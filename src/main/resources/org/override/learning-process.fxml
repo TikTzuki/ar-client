@@ -7,6 +7,8 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Text?>
 <?import javafx.scene.control.CheckBox?>
 <GridPane prefHeight="400.0"
           prefWidth="600.0"
@@ -19,13 +21,13 @@
     <padding>
         <Insets top="25" right="25" bottom="25" left="25"/>
     </padding>
-    <TableView GridPane.columnIndex="0" GridPane.rowIndex="0">
-        <columns>
-            <TableColumn text="col-1"/>
-            <TableColumn text="col-2"/>
-        </columns>
+    <HBox spacing="10" GridPane.rowIndex="0" GridPane.columnIndex="0" >
+        <Label text="Tỉ lệ hoàn thành"/>
+        <Text fx:id="percentProcessText" />
+    </HBox>
+    <TableView fx:id="creditsTable" prefWidth="400" prefHeight="600" GridPane.columnIndex="0" GridPane.rowIndex="1">
     </TableView>
-    <LineChart fx:id="learningProcessLC" GridPane.columnIndex="1" GridPane.rowIndex="0" title="Biểu đồ điểm tổng kết các học phần">
+    <LineChart fx:id="learningProcessLC" title="Biểu đồ điểm tổng kết các học phần" prefWidth="600" GridPane.rowSpan="2" GridPane.columnIndex="1" GridPane.rowIndex="0" >
         <xAxis>
             <CategoryAxis side="BOTTOM"/>
         </xAxis>
