@@ -15,10 +15,10 @@ import java.util.ResourceBundle;
 
 public class MainController {
     static final String ACTIVE_CLASS = "active";
+    public static String currentStudenId;
 
     @FXML
     public TextField studentIdTextField;
-
     @FXML
     private BorderPane mainBorderPane;
     @FXML
@@ -51,8 +51,6 @@ public class MainController {
 
     @FXML
     private void loadTermResult(ActionEvent e) {
-        System.out.println(
-                studentIdTextField.getText()
-        );
+        currentStudenId = studentIdTextField.getText();
     }
 }

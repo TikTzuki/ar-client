@@ -30,14 +30,8 @@ public class ViewScoreController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        MainController mainController = getController("main-view.fxml");
-        System.out.println("--->");
-        System.out.println(
-                mainController.studentIdTextField.getText()
-        );
-        System.out.println("--->");
 
-        TermResult rs = FakeData.getTermResult();
+        TermResult rs = FakeData.getTermResult(MainController.currentStudenId);
 //        SUMMARY
 
         setUpStudenSummaryPane(studentSummaryPane, rs.studentSummary);

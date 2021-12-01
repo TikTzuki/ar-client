@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.override.core.models.HyperBody;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 @AllArgsConstructor
@@ -27,5 +28,10 @@ public class TermResult implements HyperBody {
         public String year;
         public List<TermScoreItem> termScoreItems;
         public TermScoreSummary termScoreSummary;
+
+        public static String getName() {
+            return "my name";
+        }
     }
+
 }

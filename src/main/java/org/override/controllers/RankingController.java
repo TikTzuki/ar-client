@@ -39,7 +39,7 @@ public class RankingController extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         List<StudentSummary> studentSummaries = List.of(
-                FakeData.getTermResult().studentSummary,
+                FakeData.getTermResult(MainController.currentStudenId).studentSummary,
                 FakeData.getTermResult1().studentSummary
         );
         setUpRankTable(studentSummaries);
