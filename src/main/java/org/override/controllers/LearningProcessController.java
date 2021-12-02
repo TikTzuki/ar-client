@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import org.override.models.CreditModel;
+import org.override.models.LearningProcessModel;
 import org.override.models.TermResult;
 import org.override.services.LearningProcessService;
 import org.override.services.RankingService;
@@ -45,18 +46,23 @@ public class LearningProcessController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         MainController.currentTermResult.ifPresent(
                 termResult -> {
-                    percentProcessText.setText(
-                            learningProcessService.getProcess(termResult.studentSummary.id)
+                    LearningProcessModel learningProcess = learningProcessService.getProcess(
+                            termResult.studentSummary.id, false, true
                     );
+                    if (learningProcess != null) {
+                        percentProcessText.setText(
+                                learningProcess.learningProcessPercent + " : " + learningProcess.process
+                        );
 
-                    setUpLineChart(learningProcessLC, termResult);
+                        setUpLineChart(learningProcessLC, termResult);
 
-                    setUpCreditsTable(creditsTable, termResult.studentSummary.id);
+                        setUpCreditsTable(creditsTable, learningProcess.credits);
+                    }
                 }
         );
     }
 
-    private void setUpCreditsTable(TableView table, String sutdenId) {
+    private void setUpCreditsTable(TableView table, List<CreditModel> credits) {
         TableColumn[] columns = List.of(
                         "Mã môn học",
                         "Tên",
@@ -73,7 +79,7 @@ public class LearningProcessController implements Initializable {
         }
 
         table.getColumns().addAll(columns);
-        table.getItems().addAll(learningProcessService.getCredit(sutdenId));
+        table.getItems().addAll(credits);
         Utils.autoResizeColumns(table);
     }
 

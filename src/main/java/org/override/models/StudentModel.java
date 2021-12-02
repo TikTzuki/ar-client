@@ -11,6 +11,8 @@ import org.override.core.models.HyperBody;
 public class StudentModel implements HyperBody {
     public String studentId;
 
+    public String name;
+
     public Double avgScore;
 
     public Integer course;

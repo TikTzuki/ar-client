@@ -1,5 +1,6 @@
 package org.override.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,6 +12,8 @@ import org.override.AcademicResultsApplication;
 import org.override.models.PagingModel;
 import org.override.models.StudentModel;
 import org.override.services.RankingService;
+import org.override.utils.StringResources;
+import org.override.utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -19,6 +22,7 @@ import java.util.ResourceBundle;
 
 @Log4j2
 public class RankingController extends Controller implements Initializable {
+    StringResources stringResources = StringResources.getInstance();
     RankingService rankingService = RankingService.getInstance();
 
     @FXML
@@ -38,30 +42,20 @@ public class RankingController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        List<StudentSummary> students = List.of(
-//                FakeData.getTermResult("123").studentSummary,
-//                FakeData.getTermResult("456").studentSummary
-//        );
-        MainController.currentTermResult.ifPresent(t -> {
-            System.out.println("is present");
-            PagingModel<StudentModel> studentPage = rankingService.getRanking(
-                    t.studentSummary.id,
-                    courseCheckBox.isSelected(),
-                    specialityCheckBox.isSelected(),
-                    subjectCheckBox.isSelected()
-            );
-            if (studentPage != null) {
-                System.out.println(studentPage.getItems().size());
-                setUpRankTable(studentPage.getItems());
-            }
-        });
+        setUpRankTable();
+        pushDataRankTable();
         System.out.println("set up done");
     }
 
-    private void setUpRankTable(List<StudentModel> students) {
+    @FXML
+    public void handleSubmitRanking(ActionEvent e) {
+        pushDataRankTable();
+    }
+
+    private void setUpRankTable() {
         TableColumn[] columns = List.of(
                         "Mã sinh viên",
-//                        "Tên sinh viên",
+                        "Tên sinh viên",
 //                        "Phái",
 //                        "Nơi sinh",
                         "Điểm trung bình",
@@ -72,6 +66,7 @@ public class RankingController extends Controller implements Initializable {
                 .toArray(TableColumn[]::new);
         String[] properties = new String[]{
                 "studentId",
+                "name",
                 "avgScore",
                 "course",
                 "subject",
@@ -120,10 +115,29 @@ public class RankingController extends Controller implements Initializable {
             }
         };
 
-        actionCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        actionCol.setCellValueFactory(new PropertyValueFactory<>("studentId"));
         actionCol.setCellFactory(cellFactory);
         rankTable.getColumns().addAll(columns);
         rankTable.getColumns().add(actionCol);
-        rankTable.getItems().addAll(students);
+    }
+
+    private void pushDataRankTable() {
+        if (!courseCheckBox.isSelected() && !specialityCheckBox.isSelected() && !subjectCheckBox.isSelected()) {
+            Utils.showAlert(stringResources.requestFailed(), "", "You must select at least one of them: {course, subject, speciality}");
+            return;
+        }
+        MainController.currentTermResult.ifPresent(t -> {
+            log.info("subject: %s, speciality: %s ".formatted(subjectCheckBox.isSelected(), specialityCheckBox.isSelected()));
+            PagingModel<StudentModel> studentPage = rankingService.getRanking(
+                    t.studentSummary.id,
+                    courseCheckBox.isSelected(),
+                    subjectCheckBox.isSelected(),
+                    specialityCheckBox.isSelected()
+            );
+            if (studentPage != null) {
+                rankTable.getItems().clear();
+                rankTable.getItems().addAll(studentPage.getItems());
+            }
+        });
     }
 }

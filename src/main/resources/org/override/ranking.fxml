@@ -23,7 +23,7 @@
             <CheckBox fx:id="courseCheckBox" text="Khóa"/>
             <CheckBox fx:id="specialityCheckBox" text="Chuyên ngành"/>
             <CheckBox fx:id="subjectCheckBox" text="Khoa" selected="true"/>
-            <Button fx:id="submitButton" mnemonicParsing="false" text="Xếp hạng"/>
+            <Button fx:id="submitButton" onAction="#handleSubmitRanking" mnemonicParsing="false" text="Xếp hạng"/>
         </HBox>
     </bottom>
 </BorderPane>

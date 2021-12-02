@@ -19,4 +19,8 @@ public class LearningProcessModel implements HyperBody {
     public String toJson() {
         return gson.toJson(this);
     }
+
+    public static LearningProcessModel fromJson(String json){
+        return gson.fromJson(json, LearningProcessModel.class);
+    }
 }
