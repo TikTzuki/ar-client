@@ -1,10 +1,20 @@
 package org.override.utils;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 
 public class Utils {
+
+    public static void showAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
     public static void autoResizeColumns(TableView<?> table) {
         //Set the right policy
         table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);

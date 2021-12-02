@@ -5,28 +5,26 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import org.override.core.configs.Appconfig;
+import org.override.services.UserService;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
-import java.util.Properties;
 
 
 public class AcademicResultsApplication extends Application {
 
     public static Scene scene;
+    private final UserService userService = UserService.getInstance();
 
     @Override
     public void start(Stage stage) throws Exception {
-        URL resouce = getClass().getResource("main-view.fxml");
+        while(userService.getCurrentUser() == null)
+            userService.requiredLogin();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(resouce);
-
+        URL resource = getClass().getResource("main-view.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(resource);
         BorderPane pane = fxmlLoader.load();
         scene = new Scene(pane);
 

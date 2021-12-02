@@ -20,9 +20,9 @@
         <HBox prefHeight="100"
               alignment="CENTER"
               spacing="10">
-            <CheckBox fx:id="academicYearCheckBox" text="Khóa"/>
+            <CheckBox fx:id="courseCheckBox" text="Khóa"/>
             <CheckBox fx:id="specialityCheckBox" text="Chuyên ngành"/>
-            <CheckBox fx:id="departmentCheckBox" text="Khoa"/>
+            <CheckBox fx:id="subjectCheckBox" text="Khoa" selected="true"/>
             <Button fx:id="submitButton" mnemonicParsing="false" text="Xếp hạng"/>
         </HBox>
     </bottom>

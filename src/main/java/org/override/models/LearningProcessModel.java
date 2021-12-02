@@ -10,21 +10,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LearningProcess implements HyperBody {
+public class LearningProcessModel implements HyperBody {
     public Double learningProcessPercent;
-    public List<Credits> credits;
+    public String process;
+    public List<CreditModel> credits;
 
     @Override
     public String toJson() {
         return gson.toJson(this);
-    }
-
-    @Data
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Credits {
-        public String subjectId;
-        public String subjectName;
-        public Integer creditsCount;
     }
 }
