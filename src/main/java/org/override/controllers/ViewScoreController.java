@@ -13,7 +13,9 @@ import org.override.models.StudentSummary;
 import org.override.models.TermResult;
 import org.override.models.TermScoreItem;
 import org.override.models.TermScoreSummary;
+import org.override.services.TermResultService;
 import org.override.utils.FakeData;
+import org.override.utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +23,8 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class ViewScoreController extends Controller implements Initializable {
+    TermResultService termResultService = TermResultService.getInstance();
+
     @FXML
     GridPane studentSummaryPane;
 
@@ -30,19 +34,25 @@ public class ViewScoreController extends Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        MainController.currentTermResult.ifPresent(
-                termResult -> {
+        try {
+            MainController.currentTermResult.ifPresent(
+                    termResult -> {
 //        SUMMARY
-                    setUpStudenSummaryPane(studentSummaryPane, termResult.studentSummary);
+                        if (termResult.studentSummary != null) {
+                            setUpStudenSummaryPane(studentSummaryPane, termResult.studentSummary);
+                        }
 //        SCORE
-                    for (TermResult.TermResultItem termResultItem : termResult.termResultItems) {
-                        Accordion accordion = new Accordion();
-                        accordion.getPanes().add(setUpTermResultItemTitlePane(termResultItem));
-                        vBoxResult.getChildren().add(accordion);
-                    }
+                        for (TermResult.TermResultItem termResultItem : termResult.termResultItems) {
+                            Accordion accordion = new Accordion();
+                            accordion.getPanes().add(setUpTermResultItemTitlePane(termResultItem));
+                            vBoxResult.getChildren().add(accordion);
+                        }
 
-                }
-        );
+                    }
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
     }
@@ -51,7 +61,6 @@ public class ViewScoreController extends Controller implements Initializable {
         studentSummaryPane.setPadding(new Insets(20));
         studentSummaryPane.setHgap(25);
         studentSummaryPane.setVgap(15);
-
         Label[] values = Stream.of(
                 studentSummary.id,
                 studentSummary.name,
@@ -75,8 +84,16 @@ public class ViewScoreController extends Controller implements Initializable {
     }
 
     private TitledPane setUpTermResultItemTitlePane(TermResult.TermResultItem termResultItem) {
-        GridPane termScoreSummaryPane = setUpTermResultPane(termResultItem);
-        return new TitledPane(String.format("Học kỳ %s - Năm học %s", termResultItem.term, termResultItem.year), termScoreSummaryPane);
+        try {
+            GridPane termScoreSummaryPane = setUpTermResultPane(termResultItem);
+            return new TitledPane(
+                    String.format("Học kỳ %s - Năm học %s", termResultItem.term, termResultItem.year),
+                    termScoreSummaryPane
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private GridPane setUpTermResultPane(TermResult.TermResultItem termResultItem) {
@@ -88,9 +105,13 @@ public class ViewScoreController extends Controller implements Initializable {
 
 //        TABLE
         TableView<TermScoreItem> table = setUpTableView(termResultItem.termScoreItems);
-        termScoreSummaryPane.add(table, 0, 0, 2, 1);
-//        CONCLUSION
 
+        termScoreSummaryPane.add(table, 0, 0, 2, 1);
+
+        if (termScoreSummary == null) {
+            return termScoreSummaryPane;
+        }
+//        CONCLUSION
         Label[] termScoreLabels = (Label[]) Stream.of(
                 "Điểm trung bình học kỳ hệ 10/100:",
                 "Điểm trung bình học kỳ hệ 4:",
@@ -101,18 +122,22 @@ public class ViewScoreController extends Controller implements Initializable {
         ).map(Label::new).toArray(Label[]::new);
 
         Label[] termScoreValues = (Label[]) Stream.of(
-                termScoreSummary.avgTermScore.toString(),
-                termScoreSummary.avgGPATermScore.toString(),
-                termScoreSummary.avgScore.toString(),
-                termScoreSummary.avgGPAScore.toString(),
-                termScoreSummary.creditsTermCount.toString(),
-                termScoreSummary.creditsCount.toString()
+                String.valueOf(termScoreSummary.avgTermScore),
+                String.valueOf(termScoreSummary.avgGPATermScore),
+                String.valueOf(termScoreSummary.avgScore),
+                String.valueOf(termScoreSummary.avgGPAScore),
+                String.valueOf(termScoreSummary.creditsTermCount),
+                String.valueOf(termScoreSummary.creditsCount)
         ).map(Label::new).toArray(Label[]::new);
 
         termScoreSummaryPane.addColumn(0, termScoreLabels);
         termScoreSummaryPane.addColumn(1, termScoreValues);
 
         return termScoreSummaryPane;
+    }
+
+    private void pushDataTermResultPane(TermResult.TermResultItem termResultItem) {
+
     }
 
     private TableView<TermScoreItem> setUpTableView(List<TermScoreItem> termScoreItems) {
@@ -168,6 +193,7 @@ public class ViewScoreController extends Controller implements Initializable {
         table.getColumns().addAll(subjectIdCol, subjectNameCol, creditsCountCol, examPercentCol, finalExamPercentCol, examScoreCol, finalExamScoreCol, termScoreFirstCol, termScoreSecondCol, gpaFirstCol, gpaSecondCol, gpaCol, resultCol);
 //        SETUP DATA
         table.getItems().addAll(termScoreItems);
+        Utils.autoResizeHeight(table);
         return table;
     }
 

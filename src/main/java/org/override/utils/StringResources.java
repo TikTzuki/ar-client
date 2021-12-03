@@ -32,4 +32,9 @@ public class StringResources extends Properties {
         return getProperty(REQUEST_FAILED);
     }
 
+    public String invalidInput(){
+        String INVALID_INPUT = "invalid-input";
+        return getProperty(INVALID_INPUT);
+    }
+
 }

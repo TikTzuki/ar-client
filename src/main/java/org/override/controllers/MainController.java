@@ -9,7 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import org.override.AcademicResultsApplication;
 import org.override.models.TermResult;
+import org.override.services.TermResultService;
 import org.override.utils.FakeData;
+import org.override.utils.StringResources;
+import org.override.utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -18,6 +21,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainController extends Controller implements Initializable {
+    TermResultService termResultService = TermResultService.getInstance();
+    StringResources stringResources = StringResources.getInstance();
     static final String ACTIVE_CLASS = "active";
 
     public static Optional<TermResult> currentTermResult = Optional.empty();
@@ -56,11 +61,11 @@ public class MainController extends Controller implements Initializable {
 
     @FXML
     private void loadTermResult(ActionEvent e) {
-        currentTermResult = Optional.ofNullable(
-                FakeData.getTermResult(
-                        studentIdTextField.getText()
-                )
-        );
+        if (studentIdTextField.getText() == null || studentIdTextField.getText().isEmpty()) {
+            Utils.showAlert(stringResources.invalidInput(), "", "You must fill the input");
+            return;
+        }
+        currentTermResult = Optional.ofNullable(termResultService.getTermResult(studentIdTextField.getText()));
         loadFXML(AcademicResultsApplication.class.getResource(APP_CONFIG.scoreView()));
     }
 

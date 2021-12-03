@@ -1,5 +1,6 @@
 package org.override.utils;
 
+import javafx.beans.binding.Bindings;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -40,5 +41,12 @@ public class Utils {
         }
 
         table.setPrefWidth(preWith);
+    }
+
+    public static void autoResizeHeight(TableView<?> table) {
+        table.setFixedCellSize(25);
+        table.prefHeightProperty().bind(table.fixedCellSizeProperty().multiply(Bindings.size(table.getItems()).add(1.01)));
+        table.minHeightProperty().bind(table.prefHeightProperty());
+        table.maxHeightProperty().bind(table.prefHeightProperty());
     }
 }

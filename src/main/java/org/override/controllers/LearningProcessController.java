@@ -44,22 +44,26 @@ public class LearningProcessController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        MainController.currentTermResult.ifPresent(
-                termResult -> {
-                    LearningProcessModel learningProcess = learningProcessService.getProcess(
-                            termResult.studentSummary.id, false, true
-                    );
-                    if (learningProcess != null) {
-                        percentProcessText.setText(
-                                learningProcess.learningProcessPercent + " : " + learningProcess.process
+        try {
+            MainController.currentTermResult.ifPresent(
+                    termResult -> {
+                        LearningProcessModel learningProcess = learningProcessService.getProcess(
+                                termResult.studentSummary.id, false, true
                         );
+                        if (learningProcess != null) {
+                            percentProcessText.setText(
+                                    learningProcess.learningProcessPercent + " : " + learningProcess.process
+                            );
 
-                        setUpLineChart(learningProcessLC, termResult);
+                            setUpLineChart(learningProcessLC, termResult);
 
-                        setUpCreditsTable(creditsTable, learningProcess.credits);
+                            setUpCreditsTable(creditsTable, learningProcess.credits);
+                        }
                     }
-                }
-        );
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setUpCreditsTable(TableView table, List<CreditModel> credits) {
@@ -90,6 +94,9 @@ public class LearningProcessController implements Initializable {
         gpaScoreSeries.setName(AVG_GPA_SCORE);
         gpaScoreSeries.getData().addAll(
                 termResult.termResultItems.stream()
+                        .filter(
+                                i -> i.termScoreSummary != null
+                        )
                         .map(i -> new XYChart.Data<>(
                                 String.format(SERIES_TEMPLATE, i.term, i.year), i.termScoreSummary.avgGPAScore)
                         ).toArray(XYChart.Data[]::new)
@@ -99,15 +106,21 @@ public class LearningProcessController implements Initializable {
         gpaTermScoreSeries.setName(AVG_GPA_TERM_SCORE);
         gpaTermScoreSeries.getData().addAll(
                 termResult.termResultItems.stream()
+                        .filter(
+                                i -> i.termScoreSummary != null
+                        )
                         .map(i -> new XYChart.Data<>(
-                                String.format(SERIES_TEMPLATE, i.term, i.year), i.termScoreSummary.avgGPATermScore
-                        )).toArray(XYChart.Data[]::new)
+                                String.format(SERIES_TEMPLATE, i.term, i.year), i.termScoreSummary.avgGPATermScore)
+                        ).toArray(XYChart.Data[]::new)
         );
 
         XYChart.Series scoreSeries = new XYChart.Series<>();
         scoreSeries.setName(AVG_SCORE);
         scoreSeries.getData().addAll(
                 termResult.termResultItems.stream()
+                        .filter(
+                                i -> i.termScoreSummary != null
+                        )
                         .map(i -> new XYChart.Data<>(
                                 String.format(SERIES_TEMPLATE, i.term, i.year), i.termScoreSummary.avgScore
                         )).toArray(XYChart.Data[]::new)
@@ -117,6 +130,9 @@ public class LearningProcessController implements Initializable {
         termScoreSeries.setName(AVG_TERM_SCORE);
         termScoreSeries.getData().addAll(
                 termResult.termResultItems.stream()
+                        .filter(
+                                i -> i.termScoreSummary != null
+                        )
                         .map(i -> new XYChart.Data<>(
                                 String.format(SERIES_TEMPLATE, i.term, i.year), i.termScoreSummary.avgTermScore
                         )).toArray(XYChart.Data[]::new)
