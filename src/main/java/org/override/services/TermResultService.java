@@ -1,7 +1,6 @@
 package org.override.services;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.util.PropertySource;
 import org.override.core.SocketService;
 import org.override.core.models.HyperEntity;
 import org.override.core.models.HyperException;
@@ -35,7 +34,7 @@ public class TermResultService {
         }
         if (!response.status.equals(HyperStatus.OK)) {
             HyperException ex = HyperException.fromJson(response.body);
-            Utils.showAlert(stringResources.requestFailed(), ex.getLoc(), ex.getDetail());
+            Utils.showAlertInPlatform(stringResources.requestFailed(), ex.getLoc(), ex.getDetail());
             return null;
         }
         return TermResult.fromJson(response.body);

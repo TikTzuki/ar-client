@@ -1,5 +1,6 @@
 package org.override.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
@@ -47,18 +48,26 @@ public class LearningProcessController implements Initializable {
         try {
             MainController.currentTermResult.ifPresent(
                     termResult -> {
-                        LearningProcessModel learningProcess = learningProcessService.getProcess(
-                                termResult.studentSummary.id, false, true
-                        );
-                        if (learningProcess != null) {
-                            percentProcessText.setText(
-                                    learningProcess.learningProcessPercent + " : " + learningProcess.process
-                            );
-
-                            setUpLineChart(learningProcessLC, termResult);
-
-                            setUpCreditsTable(creditsTable, learningProcess.credits);
-                        }
+                        setUpLineChart(learningProcessLC, termResult);
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                LearningProcessModel learningProcess = learningProcessService.getProcess(
+                                        termResult.studentSummary.id, false, true
+                                );
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (learningProcess != null) {
+                                            percentProcessText.setText(
+                                                    "%.2f %% - %s".formatted(learningProcess.learningProcessPercent, learningProcess.process)
+                                            );
+                                            setUpCreditsTable(creditsTable, learningProcess.credits);
+                                        }
+                                    }
+                                });
+                            }
+                        }.start();
                     }
             );
         } catch (Exception e) {

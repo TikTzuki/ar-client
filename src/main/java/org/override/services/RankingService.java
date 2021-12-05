@@ -1,5 +1,6 @@
 package org.override.services;
 
+import javafx.application.Platform;
 import lombok.extern.log4j.Log4j2;
 import org.override.core.SocketService;
 import org.override.core.models.HyperEntity;
@@ -34,13 +35,13 @@ public class RankingService {
             );
             if (!response.status.equals(HyperStatus.OK)) {
                 HyperException ex = HyperException.fromJson(response.body);
-                Utils.showAlert(stringResources.requestFailed(), ex.getLoc(), ex.getDetail());
+                Utils.showAlertInPlatform(stringResources.requestFailed(), ex.getLoc(), ex.getDetail());
                 return null;
             }
             return PagingModel.fromGson(response.body, StudentModel.class);
         } catch (IOException e) {
             e.printStackTrace();
-            Utils.showAlert(stringResources.requestFailed(), null, e.getMessage());
+            Utils.showAlertInPlatform(stringResources.requestFailed(), null, e.getMessage());
         }
         return null;
     }

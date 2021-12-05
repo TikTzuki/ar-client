@@ -1,5 +1,6 @@
 package org.override.services;
 
+import javafx.application.Platform;
 import lombok.extern.log4j.Log4j2;
 import org.override.core.SocketService;
 import org.override.core.models.*;
@@ -30,7 +31,6 @@ public class LearningProcessService {
                     }},
                     null
             );
-            log.info(response);
             if (!response.status.equals(HyperStatus.OK)) {
                 HyperException ex = HyperException.fromJson(response.body);
                 Utils.showAlert(stringResources.requestFailed(), ex.getLoc(), ex.getDetail());
@@ -39,20 +39,9 @@ public class LearningProcessService {
             return LearningProcessModel.fromJson(response.body);
         } catch (IOException e) {
             e.printStackTrace();
-            Utils.showAlert(stringResources.requestFailed(), null, e.getMessage());
+            Utils.showAlertInPlatform(stringResources.requestFailed(), null, e.getMessage());
             return null;
         }
-    }
-
-    public List<CreditModel> getCredit(String studenId) {
-        return getCredit(studenId, false, true);
-    }
-
-    public List<CreditModel> getCredit(String studenId, boolean includeAchieved, boolean includeNotAchieved) {
-        return List.of(
-                new CreditModel("841059", "Quản trị mạng", 3),
-                new CreditModel("841113", "Phát triển phần mềm mã nguồn mở", 3)
-        );
     }
 
     private static LearningProcessService INSTANCE;

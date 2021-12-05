@@ -1,5 +1,6 @@
 package org.override.utils;
 
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
@@ -14,6 +15,15 @@ public class Utils {
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+
+    public static void showAlertInPlatform(String title, String header, String content) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                showAlert(title, header, content);
+            }
+        });
     }
 
     public static void autoResizeColumns(TableView<?> table) {
@@ -40,7 +50,7 @@ public class Utils {
             column.setPrefWidth(max + 10.0d);
         }
 
-        table.setPrefWidth(preWith);
+        table.setPrefWidth(preWith + 2);
     }
 
     public static void autoResizeHeight(TableView<?> table) {

@@ -1,5 +1,6 @@
 package org.override.controllers;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,7 +45,6 @@ public class RankingController extends Controller implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setUpRankTable();
         pushDataRankTable();
-        System.out.println("set up done");
     }
 
     @FXML
@@ -127,17 +127,26 @@ public class RankingController extends Controller implements Initializable {
             return;
         }
         MainController.currentTermResult.ifPresent(t -> {
-            log.info("subject: %s, speciality: %s ".formatted(subjectCheckBox.isSelected(), specialityCheckBox.isSelected()));
-            PagingModel<StudentModel> studentPage = rankingService.getRanking(
-                    t.studentSummary.id,
-                    courseCheckBox.isSelected(),
-                    subjectCheckBox.isSelected(),
-                    specialityCheckBox.isSelected()
-            );
-            if (studentPage != null) {
-                rankTable.getItems().clear();
-                rankTable.getItems().addAll(studentPage.getItems());
-            }
+            new Thread() {
+                @Override
+                public void run() {
+                    PagingModel<StudentModel> studentPage = rankingService.getRanking(
+                            t.studentSummary.id,
+                            courseCheckBox.isSelected(),
+                            subjectCheckBox.isSelected(),
+                            specialityCheckBox.isSelected()
+                    );
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (studentPage != null) {
+                                rankTable.getItems().clear();
+                                rankTable.getItems().addAll(studentPage.getItems());
+                            }
+                        }
+                    });
+                }
+            }.start();
         });
     }
 }

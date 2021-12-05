@@ -1,22 +1,23 @@
 package org.override.controllers;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import org.override.AcademicResultsApplication;
 import org.override.models.TermResult;
 import org.override.services.TermResultService;
-import org.override.utils.FakeData;
+import org.override.services.UserService;
 import org.override.utils.StringResources;
 import org.override.utils.Utils;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -24,6 +25,7 @@ public class MainController extends Controller implements Initializable {
     TermResultService termResultService = TermResultService.getInstance();
     StringResources stringResources = StringResources.getInstance();
     static final String ACTIVE_CLASS = "active";
+    UserService userService = UserService.getInstance();
 
     public static Optional<TermResult> currentTermResult = Optional.empty();
 
@@ -65,11 +67,36 @@ public class MainController extends Controller implements Initializable {
             Utils.showAlert(stringResources.invalidInput(), "", "You must fill the input");
             return;
         }
-        currentTermResult = Optional.ofNullable(termResultService.getTermResult(studentIdTextField.getText()));
-        loadFXML(AcademicResultsApplication.class.getResource(APP_CONFIG.scoreView()));
+
+        new Thread() {
+            @Override
+            public void run() {
+                currentTermResult = Optional.ofNullable(termResultService.getTermResult(studentIdTextField.getText()));
+
+                Platform.runLater(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                loadFXML(AcademicResultsApplication.class.getResource(APP_CONFIG.scoreView()));
+                            }
+                        }
+                );
+            }
+        }.start();
+
     }
+
+    @FXML
+    Label usernameLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        usernameLabel.setText(userService.getCurrentUser().name);
+    }
+
+    @FXML
+    public void handleLogout(ActionEvent e) {
+        userService.logout();
+        userService.requiredLogin();
     }
 }

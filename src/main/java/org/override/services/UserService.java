@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.override.AcademicResultsApplication;
 import org.override.core.SocketService;
 import org.override.core.configs.Appconfig;
 import org.override.core.models.HyperEntity;
@@ -56,7 +57,7 @@ public class UserService {
 
     public void requiredLogin() {
 //        TODO: remove this
-        login("string", "string");
+//        login("string", "string");
 
         // Create the custom dialog.
         Dialog<Pair<String, String>> dialog = new Dialog<>();
@@ -94,10 +95,10 @@ public class UserService {
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
-        result.ifPresent(pair -> {
+        result.ifPresentOrElse(pair -> {
             System.out.println("email=" + pair.getKey() + ", password=" + pair.getValue());
             login(pair.getKey(), pair.getValue());
-        });
+        }, Platform::exit);
     }
 
     public void login(String email, String password) {
@@ -107,9 +108,10 @@ public class UserService {
                             HyperRoute.LOGIN, null, new AuthenticationModel(email, password)
                     )
             );
-            log.info(rawRes);
             if (rawRes.status.equals(HyperStatus.OK)) {
                 currentUser = UserModel.fromJson(rawRes.body);
+            } else {
+                requiredLogin();
             }
         } catch (IOException e) {
             e.printStackTrace();
