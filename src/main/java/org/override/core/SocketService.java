@@ -9,6 +9,7 @@ import org.override.core.models.HyperBody;
 import org.override.core.models.HyperEntity;
 import org.override.models.UserModel;
 import org.override.services.UserService;
+import org.override.utils.Utils;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -60,6 +62,8 @@ public class SocketService {
         } catch (ClassNotFoundException | InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | BadPaddingException | InvalidKeySpecException | InvalidKeyException e) {
             log.info(e.getMessage());
             e.printStackTrace();
+        } catch (SocketTimeoutException e){
+            Utils.showAlertInPlatform("Request time out", null, "Request time out");
         }
         return null;
     }

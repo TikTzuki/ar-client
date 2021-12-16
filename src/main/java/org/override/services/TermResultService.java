@@ -32,6 +32,8 @@ public class TermResultService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if(response == null)
+            return null;
         if (!response.status.equals(HyperStatus.OK)) {
             HyperException ex = HyperException.fromJson(response.body);
             Utils.showAlertInPlatform(stringResources.requestFailed(), ex.getLoc(), ex.getDetail());
