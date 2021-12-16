@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -71,12 +72,14 @@ public class MainController extends Controller implements Initializable {
         new Thread() {
             @Override
             public void run() {
+                AcademicResultsApplication.scene.setCursor(Cursor.WAIT);
                 currentTermResult = Optional.ofNullable(termResultService.getTermResult(studentIdTextField.getText()));
 
                 Platform.runLater(
                         new Runnable() {
                             @Override
                             public void run() {
+                                AcademicResultsApplication.scene.setCursor(Cursor.DEFAULT);
                                 loadFXML(AcademicResultsApplication.class.getResource(APP_CONFIG.scoreView()));
                             }
                         }

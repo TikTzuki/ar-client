@@ -3,6 +3,7 @@ package org.override.controllers;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
@@ -10,6 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import org.override.AcademicResultsApplication;
 import org.override.models.CreditModel;
 import org.override.models.LearningProcessModel;
 import org.override.models.TermResult;
@@ -52,12 +54,14 @@ public class LearningProcessController implements Initializable {
                         new Thread() {
                             @Override
                             public void run() {
+                                AcademicResultsApplication.scene.setCursor(Cursor.WAIT);
                                 LearningProcessModel learningProcess = learningProcessService.getProcess(
                                         termResult.studentSummary.id, false, true
                                 );
                                 Platform.runLater(new Runnable() {
                                     @Override
                                     public void run() {
+                                        AcademicResultsApplication.scene.setCursor(Cursor.DEFAULT);
                                         if (learningProcess != null) {
                                             percentProcessText.setText(
                                                     "%.2f %% - %s".formatted(learningProcess.learningProcessPercent, learningProcess.process)

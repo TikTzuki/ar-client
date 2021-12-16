@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
@@ -130,6 +131,7 @@ public class RankingController extends Controller implements Initializable {
             new Thread() {
                 @Override
                 public void run() {
+                    AcademicResultsApplication.scene.setCursor(Cursor.WAIT);
                     PagingModel<StudentModel> studentPage = rankingService.getRanking(
                             t.studentSummary.id,
                             courseCheckBox.isSelected(),
@@ -139,6 +141,7 @@ public class RankingController extends Controller implements Initializable {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
+                            AcademicResultsApplication.scene.setCursor(Cursor.DEFAULT);
                             if (studentPage != null) {
                                 rankTable.getItems().clear();
                                 rankTable.getItems().addAll(studentPage.getItems());
