@@ -54,8 +54,8 @@ public class Utils {
     }
 
     public static void autoResizeHeight(TableView<?> table) {
-        table.setFixedCellSize(25);
-        table.prefHeightProperty().bind(table.fixedCellSizeProperty().multiply(Bindings.size(table.getItems()).add(1.01)));
+        table.setFixedCellSize(28);
+        table.prefHeightProperty().bind(table.fixedCellSizeProperty().multiply(Bindings.size(table.getItems()).add(2)));
         table.minHeightProperty().bind(table.prefHeightProperty());
         table.maxHeightProperty().bind(table.prefHeightProperty());
     }

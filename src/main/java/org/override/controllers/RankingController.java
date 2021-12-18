@@ -123,10 +123,10 @@ public class RankingController extends Controller implements Initializable {
     }
 
     private void pushDataRankTable() {
-        if (!courseCheckBox.isSelected() && !specialityCheckBox.isSelected() && !subjectCheckBox.isSelected()) {
-            Utils.showAlert(stringResources.requestFailed(), "", "You must select at least one of them: {course, subject, speciality}");
-            return;
-        }
+//        if (!courseCheckBox.isSelected() && !specialityCheckBox.isSelected() && !subjectCheckBox.isSelected()) {
+//            Utils.showAlert(stringResources.requestFailed(), "", "You must select at least one of them: {course, subject, speciality}");
+//            return;
+//        }
         MainController.currentTermResult.ifPresent(t -> {
             new Thread() {
                 @Override
@@ -145,6 +145,8 @@ public class RankingController extends Controller implements Initializable {
                             if (studentPage != null) {
                                 rankTable.getItems().clear();
                                 rankTable.getItems().addAll(studentPage.getItems());
+                                Utils.autoResizeColumns(rankTable);
+                                Utils.autoResizeHeight(rankTable);
                             }
                         }
                     });
