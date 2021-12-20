@@ -1,7 +1,9 @@
 package org.override.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TableColumn;
@@ -9,7 +11,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import org.override.AcademicResultsApplication;
 import org.override.models.CreditModel;
+import org.override.models.LearningProcessModel;
 import org.override.models.TermResult;
 import org.override.services.LearningProcessService;
 import org.override.services.RankingService;
@@ -60,20 +64,39 @@ public class LearningProcessController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        MainController.currentTermResult.ifPresent(
-                termResult -> {
-                    percentProcessText.setText(
-                            learningProcessService.getProcess(termResult.studentSummary.id)
-                    );
-
-                    setUpLineChart(learningProcessLC, termResult);
-
-                    setUpCreditsTable(creditsTable, termResult.studentSummary.id);
-                }
-        );
+        try {
+            MainController.currentTermResult.ifPresent(
+                    termResult -> {
+                        setUpLineChart(learningProcessLC, termResult);
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                AcademicResultsApplication.scene.setCursor(Cursor.WAIT);
+                                LearningProcessModel learningProcess = learningProcessService.getProcess(
+                                        termResult.studentSummary.id, false, true
+                                );
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        AcademicResultsApplication.scene.setCursor(Cursor.DEFAULT);
+                                        if (learningProcess != null) {
+                                            percentProcessText.setText(
+                                                    "%.2f %% - %s".formatted(learningProcess.learningProcessPercent, learningProcess.process)
+                                            );
+                                            setUpCreditsTable(creditsTable, learningProcess.credits);
+                                        }
+                                    }
+                                });
+                            }
+                        }.start();
+                    }
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void setUpCreditsTable(TableView table, String sutdenId) {
+    private void setUpCreditsTable(TableView table, List<CreditModel> credits) {
         TableColumn[] columns = List.of(
                         "Mã môn học",
                         "Tên",
@@ -90,7 +113,7 @@ public class LearningProcessController implements Initializable {
         }
 
         table.getColumns().addAll(columns);
-        table.getItems().addAll(learningProcessService.getCredit(sutdenId));
+        table.getItems().addAll(credits);
         Utils.autoResizeColumns(table);
     }
 
@@ -116,6 +139,9 @@ public class LearningProcessController implements Initializable {
         gpaScoreSeries.setName(AVG_GPA_SCORE);
         gpaScoreSeries.getData().addAll(
                 termResult.termResultItems.stream()
+                        .filter(
+                                i -> i.termScoreSummary != null
+                        )
                         .map(i -> new XYChart.Data<>(
                                 String.format(SERIES_TEMPLATE, i.term, i.year), i.termScoreSummary.avgGPAScore)
                         ).toArray(XYChart.Data[]::new)
@@ -125,15 +151,21 @@ public class LearningProcessController implements Initializable {
         gpaTermScoreSeries.setName(AVG_GPA_TERM_SCORE);
         gpaTermScoreSeries.getData().addAll(
                 termResult.termResultItems.stream()
+                        .filter(
+                                i -> i.termScoreSummary != null
+                        )
                         .map(i -> new XYChart.Data<>(
-                                String.format(SERIES_TEMPLATE, i.term, i.year), i.termScoreSummary.avgGPATermScore
-                        )).toArray(XYChart.Data[]::new)
+                                String.format(SERIES_TEMPLATE, i.term, i.year), i.termScoreSummary.avgGPATermScore)
+                        ).toArray(XYChart.Data[]::new)
         );
 
         scoreSeries = new XYChart.Series<>();
         scoreSeries.setName(AVG_SCORE);
         scoreSeries.getData().addAll(
                 termResult.termResultItems.stream()
+                        .filter(
+                                i -> i.termScoreSummary != null
+                        )
                         .map(i -> new XYChart.Data<>(
                                 String.format(SERIES_TEMPLATE, i.term, i.year), i.termScoreSummary.avgScore
                         )).toArray(XYChart.Data[]::new)
@@ -143,6 +175,9 @@ public class LearningProcessController implements Initializable {
         termScoreSeries.setName(AVG_TERM_SCORE);
         termScoreSeries.getData().addAll(
                 termResult.termResultItems.stream()
+                        .filter(
+                                i -> i.termScoreSummary != null
+                        )
                         .map(i -> new XYChart.Data<>(
                                 String.format(SERIES_TEMPLATE, i.term, i.year), i.termScoreSummary.avgTermScore
                         )).toArray(XYChart.Data[]::new)

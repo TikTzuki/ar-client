@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <comment>Application string resources</comment>
+    <entry key="request-failed">Request was failed!</entry>
+    <entry key="invalid-input">Input invalid!</entry>
+    <entry key="unknow-except">Something was wrong!</entry>
+</properties>

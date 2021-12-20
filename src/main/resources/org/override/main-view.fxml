@@ -8,6 +8,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.Region?>
 <BorderPane
         fx:id="mainBorderPane"
         xmlns="http://javafx.com/javafx/11.0.2"
@@ -27,10 +28,13 @@
                     </ImageView>
                 </graphic>
             </Button>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="usernameLabel" styleClass="text"/>
+            <Button onAction="#handleLogout" styleClass="nav-item, small" text="đăng xuất"/>
         </HBox>
     </top>
     <left>
-        <VBox spacing="1" styleClass="navbar">
+        <VBox spacing="1" styleClass="navbar" prefHeight="Infinity">
             <Button fx:id="viewScoreBtn" onAction="#handleShowView" styleClass="nav-item, active" text="Tra cứu điểm" userData="view-score.fxml"/>
             <Button fx:id="viewProcessBtn" onAction="#handleShowView" styleClass="nav-item" text="Tiến độ học tập" userData="learning-process.fxml"/>
             <Button fx:id="viewRankingBtn" onAction="#handleShowView" styleClass="nav-item" text="Xếp hạng" userData="ranking.fxml"/>
@@ -38,7 +42,7 @@
     </left>
 
     <center>
-        <fx:include source="learning-process.fxml"/>
+        <fx:include source="view-score.fxml"/>
     </center>
 
     <bottom>

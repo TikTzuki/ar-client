@@ -2,6 +2,10 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>Application properties</comment>
+    <entry key="spring-host">45.119.84.250</entry>
+    <entry key="spring-port">8124</entry>
+<!--    <entry key="host">45.119.84.250</entry>-->
+<!--    <entry key="port">8123</entry>-->
     <entry key="host">localhost</entry>
     <entry key="port">8000</entry>
     <entry key="main-view">main-view.fxml</entry>
