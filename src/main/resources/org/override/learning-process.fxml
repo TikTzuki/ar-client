@@ -9,6 +9,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.CheckBox?>
 <GridPane prefHeight="400.0"
           prefWidth="600.0"
           xmlns="http://javafx.com/javafx/11.0.2"
@@ -34,4 +35,10 @@
             <NumberAxis side="LEFT"/>
         </yAxis>
     </LineChart>
+    <GridPane fx:id="checkBoxPane" GridPane.columnIndex="1" GridPane.rowIndex="1" hgap="10" vgap="10">
+        <CheckBox fx:id="avgGPATermScoreCheckBox" text="Trung bình GPA học kỳ" onAction="#toggleLine" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <CheckBox fx:id="avgGPAScoreCheckBox" text="Trung bình GPA tích lũy" onAction="#toggleLine" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <CheckBox fx:id="avgTermScoreCheckBox" text="Trung bình học kỳ" onAction="#toggleLine" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <CheckBox fx:id="avgScoreCheckBox" text="Trung bình tích lũy" onAction="#toggleLine" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    </GridPane>
 </GridPane>

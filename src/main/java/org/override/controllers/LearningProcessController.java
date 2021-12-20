@@ -1,11 +1,13 @@
 package org.override.controllers;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -44,6 +46,23 @@ public class LearningProcessController implements Initializable {
 
     @FXML
     private LineChart<String, Number> learningProcessLC;
+
+    XYChart.Series gpaScoreSeries;
+    XYChart.Series gpaTermScoreSeries;
+    XYChart.Series scoreSeries;
+    XYChart.Series termScoreSeries;
+
+    @FXML
+    CheckBox avgGPATermScoreCheckBox;
+
+    @FXML
+    CheckBox avgGPAScoreCheckBox;
+
+    @FXML
+    CheckBox avgTermScoreCheckBox;
+
+    @FXML
+    CheckBox avgScoreCheckBox;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -100,10 +119,25 @@ public class LearningProcessController implements Initializable {
         Utils.autoResizeColumns(table);
     }
 
-    private void setUpLineChart(LineChart<String, Number> lineChart, TermResult termResult) {
+    @FXML
+    public void toggleLine(ActionEvent e) {
+        CheckBox cb = (CheckBox) e.getSource();
+        switch (cb.getId()) {
+            case "avgGPAScoreCheckBox" -> System.out.println("2");
+            case "avgGPATermScoreCheckBox" -> System.out.println("1");
+        }
+//        System.out.println(
+//                cb.isSelected()
+//        );
+        System.out.println(
+                cb == avgGPAScoreCheckBox
+        );
+    }
+
+    public void setUpLineChart(LineChart<String, Number> lineChart, TermResult termResult) {
 
 
-        XYChart.Series gpaScoreSeries = new XYChart.Series<>();
+        gpaScoreSeries = new XYChart.Series<>();
         gpaScoreSeries.setName(AVG_GPA_SCORE);
         gpaScoreSeries.getData().addAll(
                 termResult.termResultItems.stream()
@@ -115,7 +149,7 @@ public class LearningProcessController implements Initializable {
                         ).toArray(XYChart.Data[]::new)
         );
 
-        XYChart.Series gpaTermScoreSeries = new XYChart.Series<>();
+        gpaTermScoreSeries = new XYChart.Series<>();
         gpaTermScoreSeries.setName(AVG_GPA_TERM_SCORE);
         gpaTermScoreSeries.getData().addAll(
                 termResult.termResultItems.stream()
@@ -127,7 +161,7 @@ public class LearningProcessController implements Initializable {
                         ).toArray(XYChart.Data[]::new)
         );
 
-        XYChart.Series scoreSeries = new XYChart.Series<>();
+        scoreSeries = new XYChart.Series<>();
         scoreSeries.setName(AVG_SCORE);
         scoreSeries.getData().addAll(
                 termResult.termResultItems.stream()
@@ -139,7 +173,7 @@ public class LearningProcessController implements Initializable {
                         )).toArray(XYChart.Data[]::new)
         );
 
-        XYChart.Series termScoreSeries = new XYChart.Series<>();
+        termScoreSeries = new XYChart.Series<>();
         termScoreSeries.setName(AVG_TERM_SCORE);
         termScoreSeries.getData().addAll(
                 termResult.termResultItems.stream()

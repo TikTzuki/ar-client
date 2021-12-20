@@ -32,6 +32,7 @@ public class MainController extends Controller implements Initializable {
 
     @FXML
     public TextField studentIdTextField;
+
     @FXML
     private BorderPane mainBorderPane;
     @FXML
