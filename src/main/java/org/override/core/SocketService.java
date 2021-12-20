@@ -9,6 +9,7 @@ import org.override.core.models.HyperBody;
 import org.override.core.models.HyperEntity;
 import org.override.models.UserModel;
 import org.override.services.UserService;
+import org.override.utils.StringResources;
 import org.override.utils.Utils;
 
 import javax.crypto.BadPaddingException;
@@ -17,6 +18,7 @@ import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.security.InvalidAlgorithmParameterException;
@@ -30,6 +32,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class SocketService {
     Appconfig configs = Appconfig.getInstance();
+    StringResources stringResources = StringResources.getInstance();
     UserService userService = UserService.getInstance();
     private static final Gson gson = new Gson();
 
@@ -62,8 +65,11 @@ public class SocketService {
         } catch (ClassNotFoundException | InvalidAlgorithmParameterException | NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | BadPaddingException | InvalidKeySpecException | InvalidKeyException e) {
             log.info(e.getMessage());
             e.printStackTrace();
-        } catch (SocketTimeoutException e){
-            Utils.showAlertInPlatform("Request time out", null, "Request time out");
+        } catch (SocketTimeoutException e) {
+            Utils.showAlertInPlatform(stringResources.requestTimeOut(), null, stringResources.requestTimeOut());
+        } catch (ConnectException e) {
+            Utils.showAlert(stringResources.requestFailed(), null, stringResources.cannotConnectToServer());
+        } catch (Exception ignore) {
         }
         return null;
     }

@@ -5,4 +5,6 @@
     <entry key="request-failed">Request was failed!</entry>
     <entry key="invalid-input">Input invalid!</entry>
     <entry key="unknow-except">Something was wrong!</entry>
+    <entry key="cant-connect-to-server">Cannot connect to server</entry>
+    <entry key="request-timeout">Request timeout!!!</entry>
 </properties>

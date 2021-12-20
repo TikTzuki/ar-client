@@ -38,6 +38,7 @@ import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.URL;
 import java.security.InvalidAlgorithmParameterException;
@@ -96,9 +97,13 @@ public class UserService {
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
         result.ifPresentOrElse(pair -> {
-            System.out.println("email=" + pair.getKey() + ", password=" + pair.getValue());
             login(pair.getKey(), pair.getValue());
-        }, Platform::exit);
+            if (currentUser == null)
+                requiredLogin();
+        }, () -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     public void login(String email, String password) {
@@ -108,11 +113,8 @@ public class UserService {
                             HyperRoute.LOGIN, null, new AuthenticationModel(email, password)
                     )
             );
-            if (rawRes.status.equals(HyperStatus.OK)) {
+            if (rawRes != null && rawRes.status.equals(HyperStatus.OK))
                 currentUser = UserModel.fromJson(rawRes.body);
-            } else {
-                requiredLogin();
-            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -253,6 +255,8 @@ public class UserService {
             return response;
         } catch (ClassNotFoundException e) {
             Utils.showAlert(stringResources.requestFailed(), "", e.getMessage());
+        } catch (ConnectException e) {
+            Utils.showAlert(stringResources.requestFailed(), "", stringResources.cannotConnectToServer());
         }
         return null;
     }

@@ -21,10 +21,10 @@
         <HBox styleClass="panel-body, top-bar" spacing="5">
             <Label text="MSSV" styleClass="text"/>
             <TextField fx:id="studentIdTextField" minHeight="30"/>
-            <Button minHeight="30" onAction="#loadTermResult">
+            <Button minHeight="30" onAction="#loadTermResult" styleClass="btn-tran">
                 <graphic>
                     <ImageView fitWidth="20" fitHeight="20">
-                        <Image url="@images/education/geography.png"/>
+                        <Image url="@images/nature/loupe.png"/>
                     </ImageView>
                 </graphic>
             </Button>
