@@ -7,6 +7,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.override.services.UserService;
+import org.override.utils.StringResources;
+import org.override.utils.Utils;
 
 import java.net.URL;
 import java.util.Objects;
@@ -19,8 +21,7 @@ public class AcademicResultsApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        while(userService.getCurrentUser() == null)
-            userService.requiredLogin();
+        userService.requiredLogin();
 
         URL resource = getClass().getResource("main-view.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(resource);

@@ -5,6 +5,7 @@ import com.google.gson.JsonSyntaxException;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -38,6 +39,7 @@ import javax.crypto.NoSuchPaddingException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.net.URL;
 import java.security.InvalidAlgorithmParameterException;
@@ -56,9 +58,6 @@ public class UserService {
     private UserModel currentUser;
 
     public void requiredLogin() {
-//        TODO: remove this
-//        login("string", "string");
-
         // Create the custom dialog.
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Login, sweetie!!!");
@@ -83,7 +82,7 @@ public class UserService {
         dialog.getDialogPane().setContent(gridPane);
 
         // Request focus on the username field by default.
-        Platform.runLater(() -> emailField.requestFocus());
+        Platform.runLater(emailField::requestFocus);
 
         // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
@@ -96,9 +95,13 @@ public class UserService {
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
         result.ifPresentOrElse(pair -> {
-            System.out.println("email=" + pair.getKey() + ", password=" + pair.getValue());
             login(pair.getKey(), pair.getValue());
-        }, Platform::exit);
+            if (currentUser == null)
+                requiredLogin();
+        }, () -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     public void login(String email, String password) {
@@ -108,10 +111,8 @@ public class UserService {
                             HyperRoute.LOGIN, null, new AuthenticationModel(email, password)
                     )
             );
-            if (rawRes.status.equals(HyperStatus.OK)) {
+            if (rawRes != null && rawRes.status.equals(HyperStatus.OK)) {
                 currentUser = UserModel.fromJson(rawRes.body);
-            } else {
-                requiredLogin();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -253,6 +254,8 @@ public class UserService {
             return response;
         } catch (ClassNotFoundException e) {
             Utils.showAlert(stringResources.requestFailed(), "", e.getMessage());
+        } catch (ConnectException e) {
+            Utils.showAlert(stringResources.requestFailed(), "", "cant connect to server");
         }
         return null;
     }
