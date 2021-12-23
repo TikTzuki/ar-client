@@ -58,8 +58,7 @@ public class MainController extends Controller implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(url);
             mainBorderPane.setCenter(loader.load());
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        } catch (IOException ignore) {
         }
     }
 

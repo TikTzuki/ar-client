@@ -11,8 +11,10 @@
     <center>
         <ScrollPane
                 BorderPane.alignment="CENTER"
+                fitToWidth="true"
                 vbarPolicy="ALWAYS">
             <TableView
+                    fixedCellSize="Infinity"
                     fx:id="rankTable"/>
         </ScrollPane>
     </center>

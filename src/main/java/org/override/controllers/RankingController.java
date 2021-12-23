@@ -93,7 +93,6 @@ public class RankingController extends Controller implements Initializable {
                         } else {
                             btn.setOnAction(e -> {
                                 StudentModel student = getTableView().getItems().get(getIndex());
-                                System.out.println(student);
 
                                 FXMLLoader loader = getLoader(APP_CONFIG.mainView());
                                 try {
@@ -145,7 +144,7 @@ public class RankingController extends Controller implements Initializable {
                             if (studentPage != null) {
                                 rankTable.getItems().clear();
                                 rankTable.getItems().addAll(studentPage.getItems());
-                                Utils.autoResizeColumns(rankTable);
+                                Utils.autoResizeColumns(rankTable, 0);
                                 Utils.autoResizeHeight(rankTable);
                             }
                         }

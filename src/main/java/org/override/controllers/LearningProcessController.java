@@ -11,7 +11,6 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import org.override.AcademicResultsApplication;
 import org.override.models.CreditModel;
@@ -19,8 +18,6 @@ import org.override.models.LearningProcessModel;
 import org.override.models.TermResult;
 import org.override.services.LearningProcessService;
 import org.override.services.RankingService;
-import org.override.services.TermResultService;
-import org.override.utils.FakeData;
 import org.override.utils.Utils;
 
 import java.net.URL;
@@ -116,22 +113,19 @@ public class LearningProcessController implements Initializable {
 
         table.getColumns().addAll(columns);
         table.getItems().addAll(credits);
-        Utils.autoResizeColumns(table);
+        Utils.autoResizeTableColumns(table);
     }
 
     @FXML
     public void toggleLine(ActionEvent e) {
-        CheckBox cb = (CheckBox) e.getSource();
-        switch (cb.getId()) {
-            case "avgGPAScoreCheckBox" -> System.out.println("2");
-            case "avgGPATermScoreCheckBox" -> System.out.println("1");
-        }
+//        CheckBox cb = (CheckBox) e.getSource();
+//        switch (cb.getId()) {
+//            case "avgGPAScoreCheckBox" -> System.out.println("2");
+//            case "avgGPATermScoreCheckBox" -> System.out.println("1");
+//        }
 //        System.out.println(
 //                cb.isSelected()
 //        );
-        System.out.println(
-                cb == avgGPAScoreCheckBox
-        );
     }
 
     public void setUpLineChart(LineChart<String, Number> lineChart, TermResult termResult) {

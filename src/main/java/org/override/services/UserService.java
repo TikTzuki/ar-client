@@ -1,33 +1,20 @@
 package org.override.services;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import javafx.util.Pair;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.override.AcademicResultsApplication;
-import org.override.core.SocketService;
 import org.override.core.configs.Appconfig;
 import org.override.core.models.HyperEntity;
-import org.override.core.models.HyperException;
 import org.override.core.models.HyperRoute;
 import org.override.core.models.HyperStatus;
 import org.override.models.AuthenticationModel;
 import org.override.models.UserModel;
-import org.override.utils.RSAUtil;
 import org.override.utils.SecurityUtil;
 import org.override.utils.StringResources;
 import org.override.utils.Utils;
@@ -40,14 +27,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
-import java.net.URL;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
-import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 @Log4j2
@@ -57,9 +42,6 @@ public class UserService {
     private UserModel currentUser;
 
     public void requiredLogin() {
-//        TODO: remove this
-//        login("string", "string");
-
         // Create the custom dialog.
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Login, sweetie!!!");
@@ -84,7 +66,7 @@ public class UserService {
         dialog.getDialogPane().setContent(gridPane);
 
         // Request focus on the username field by default.
-        Platform.runLater(() -> emailField.requestFocus());
+        Platform.runLater(emailField::requestFocus);
 
         // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {

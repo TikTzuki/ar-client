@@ -26,10 +26,9 @@ public class Utils {
         });
     }
 
-    public static void autoResizeColumns(TableView<?> table) {
+    public static double autoResizeColumns(TableView<?> table, double preWith) {
         //Set the right policy
         table.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-        double preWith = 0;
         for (TableColumn column : table.getColumns()) {
             //Minimal width = columnheader
             Text t = new Text(column.getText());
@@ -49,7 +48,12 @@ public class Utils {
             preWith += (max + 10.0);
             column.setPrefWidth(max + 10.0d);
         }
+        return preWith;
+    }
 
+    public static void autoResizeTableColumns(TableView<?> table) {
+        double preWith = 0;
+        preWith = autoResizeColumns(table, preWith);
         table.setPrefWidth(preWith + 2);
     }
 

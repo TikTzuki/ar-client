@@ -40,12 +40,9 @@ public class SecurityUtil {
         Cipher cipher = null;
         try {
             cipher = Cipher.getInstance(CRYPT_ALGORITHM);
-            System.out.println(cipher);
 
             cipher.init(Cipher.ENCRYPT_MODE, key, iv);
-            System.out.println(cipher + " input: " + input);
             byte[] cipherText = cipher.doFinal(input.getBytes());
-            System.out.println("done" + input);
 
             return Base64.getEncoder()
                     .encodeToString(cipherText);
