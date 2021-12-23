@@ -5,11 +5,9 @@
 
 
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.control.CheckBox?>
 <GridPane prefHeight="400.0"
           prefWidth="600.0"
           xmlns="http://javafx.com/javafx/11.0.2"
@@ -27,7 +25,7 @@
     </HBox>
     <TableView fx:id="creditsTable" prefWidth="400" prefHeight="600" GridPane.columnIndex="0" GridPane.rowIndex="1">
     </TableView>
-    <LineChart fx:id="learningProcessLC" title="Biểu đồ điểm tổng kết các học phần" prefWidth="600" GridPane.rowSpan="2" GridPane.columnIndex="1" GridPane.rowIndex="0" >
+    <LineChart fx:id="learningProcessLC" title="Biểu đồ điểm tổng kết các học phần" GridPane.rowSpan="2" GridPane.columnIndex="1" GridPane.rowIndex="0">
         <xAxis>
             <CategoryAxis side="BOTTOM"/>
         </xAxis>
@@ -35,10 +33,10 @@
             <NumberAxis side="LEFT"/>
         </yAxis>
     </LineChart>
-<!--    <GridPane fx:id="checkBoxPane" GridPane.columnIndex="1" GridPane.rowIndex="1" hgap="10" vgap="10">-->
-<!--        <CheckBox fx:id="avgGPATermScoreCheckBox" text="Trung bình GPA học kỳ" onAction="#toggleLine" GridPane.rowIndex="0" GridPane.columnIndex="0"/>-->
-<!--        <CheckBox fx:id="avgGPAScoreCheckBox" text="Trung bình GPA tích lũy" onAction="#toggleLine" GridPane.rowIndex="0" GridPane.columnIndex="1"/>-->
-<!--        <CheckBox fx:id="avgTermScoreCheckBox" text="Trung bình học kỳ" onAction="#toggleLine" GridPane.rowIndex="1" GridPane.columnIndex="0"/>-->
-<!--        <CheckBox fx:id="avgScoreCheckBox" text="Trung bình tích lũy" onAction="#toggleLine" GridPane.rowIndex="1" GridPane.columnIndex="1"/>-->
-<!--    </GridPane>-->
+    <!--    <GridPane fx:id="checkBoxPane" GridPane.columnIndex="1" GridPane.rowIndex="1" hgap="10" vgap="10">-->
+    <!--        <CheckBox fx:id="avgGPATermScoreCheckBox" text="Trung bình GPA học kỳ" onAction="#toggleLine" GridPane.rowIndex="0" GridPane.columnIndex="0"/>-->
+    <!--        <CheckBox fx:id="avgGPAScoreCheckBox" text="Trung bình GPA tích lũy" onAction="#toggleLine" GridPane.rowIndex="0" GridPane.columnIndex="1"/>-->
+    <!--        <CheckBox fx:id="avgTermScoreCheckBox" text="Trung bình học kỳ" onAction="#toggleLine" GridPane.rowIndex="1" GridPane.columnIndex="0"/>-->
+    <!--        <CheckBox fx:id="avgScoreCheckBox" text="Trung bình tích lũy" onAction="#toggleLine" GridPane.rowIndex="1" GridPane.columnIndex="1"/>-->
+    <!--    </GridPane>-->
 </GridPane>

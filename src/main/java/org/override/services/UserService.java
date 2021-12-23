@@ -229,7 +229,6 @@ public class UserService {
             out.writeObject(gson.toJson(request));
             log.info("after write");
             HyperEntity response = gson.fromJson((String) in.readObject(), HyperEntity.class);
-            log.info(response.body);
 
             out.close();
             in.close();

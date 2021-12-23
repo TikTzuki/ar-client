@@ -54,9 +54,7 @@ public class SocketService {
             out.writeObject(gson.toJson(request));
             log.info("after write");
             HyperEntity response = gson.fromJson((String) in.readObject(), HyperEntity.class);
-            log.info(response);
             response = userService.descryptResponse(response, request);
-            log.info(response);
 
             out.close();
             in.close();
