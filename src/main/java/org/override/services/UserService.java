@@ -2,13 +2,15 @@ package org.override.services;
 
 import com.google.gson.Gson;
 import javafx.application.Platform;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.util.Pair;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.override.AcademicResultsApplication;
 import org.override.core.configs.Appconfig;
 import org.override.core.models.HyperEntity;
 import org.override.core.models.HyperRoute;
@@ -31,6 +33,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -44,28 +47,34 @@ public class UserService {
     public void requiredLogin() {
         // Create the custom dialog.
         Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.getDialogPane().getStylesheets().add(AcademicResultsApplication.class.getResource("css/dialog.css").toExternalForm());
+        dialog.getDialogPane().getStyleClass().add("login-dialog");
+        dialog.getDialogPane().setBackground(new Background(new BackgroundImage(
+                new Image(AcademicResultsApplication.class.getResource("images/login-bg.jpg").toExternalForm()),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)
+        ));
         dialog.setTitle("Login, sweetie!!!");
 
         // Set the button types.
         ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+
         dialog.getDialogPane().getButtonTypes().addAll(loginButtonType);
 
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(20, 20, 20, 20));
+        VBox vBox = new VBox();
+        vBox.setSpacing(40);
+        vBox.setAlignment(Pos.BOTTOM_CENTER);
 
         TextField emailField = new TextField();
+        emailField.setPrefHeight(40);
         emailField.setPromptText("Email");
         TextField passwordField = new PasswordField();
+        passwordField.setPrefHeight(40);
         passwordField.setPromptText("Password");
 
-        gridPane.add(emailField, 0, 0);
-        gridPane.add(passwordField, 0, 1);
+        vBox.getChildren().addAll(emailField, passwordField);
 
-        dialog.getDialogPane().setContent(gridPane);
+        dialog.getDialogPane().setContent(vBox);
 
-        // Request focus on the username field by default.
         Platform.runLater(emailField::requestFocus);
 
         // Convert the result to a username-password-pair when the login button is clicked.
@@ -106,71 +115,6 @@ public class UserService {
         currentUser = null;
     }
 
-//    public HyperEntity handleLogin(HyperEntity entity) {
-//        try {
-//            AuthenticationModel authenticationModel = AuthenticationModel.fromJson(entity.body);
-//
-//            String hasedPassword = DigestUtils.sha256Hex(authenticationModel.password + salt);
-//            Example<UserModel> example = Example.of(new UserModel(authenticationModel.email, hasedPassword));
-//            Optional<UserModel> userOpt = userRepository.findOne(example);
-//            if (userOpt.isPresent()) {
-//                UserModel user = userOpt.get();
-//                return HyperEntity.ok(
-//                        new AuthenticationModel.AuthenticationSuccess(user.getPublicKey())
-//                );
-//            } else
-//                return HyperEntity.notFound(
-//                        new HyperException(HyperException.NOT_FOUND, "body -> email", "email or password invalid")
-//                );
-//        } catch (JsonSyntaxException e) {
-//            e.printStackTrace();
-//        }
-//        return HyperEntity.unprocessableEntity(
-//                new HyperException(HyperException.BAD_REQUEST, "", "internal error")
-//        );
-//    }
-//
-//    public HyperEntity auth(HyperEntity hyperEntity) {
-//        if (hyperEntity.route.equals(HyperRoute.LOGIN))
-//            return hyperEntity;
-//        String authorization = hyperEntity.headers.get("Authorization");
-//
-//        if (!authorization.matches(".+:.+")) {
-//            return HyperEntity.unauthorized(
-//                    new HyperException(HyperException.UNAUTHORIZED)
-//            );
-//        }
-//
-//        String[] authorizations = authorization.split(":");
-//        String userIdString = authorizations[0];
-//        String ivString = authorizations[1];
-//
-//        if (!NumberUtils.isParsable(userIdString))
-//            return HyperEntity.unauthorized(new HyperException(HyperException.UNAUTHORIZED));
-//
-//        Integer userId = Integer.parseInt(userIdString);
-//        Optional<UserModel> userOpt = userRepository.findById(userId);
-//        if (userOpt.isPresent()) {
-//            try {
-//                UserModel user = userOpt.get();
-//                String key = SecurityUtil.generateKey(user.getPublicKey(), user.getEmail());
-//                hyperEntity.body = SecurityUtil.decrypt(
-//                        hyperEntity.body,
-//                        key,
-//                        ivString
-//                );
-//
-//                log.info(hyperEntity.body);
-//
-//                return hyperEntity;
-//            } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException ignore) {
-//            }
-//        }
-//        return HyperEntity.unauthorized(
-//                new HyperException(HyperException.UNAUTHORIZED)
-//        );
-//
-//    }
 
     public HyperEntity encryptRequest(
             HyperEntity request
